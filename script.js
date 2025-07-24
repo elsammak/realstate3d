@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const image = document.getElementById("product-image");
 
   const images = []; // This will be populated with image paths
-  const totalImages = 36; // Number of images for a full 360-degree rotation
+  const totalImages = 37; // Number of images for a full 360-degree rotation
   let currentImage = 0;
 
   // Populate the images array
-  for (let i = 1; i <= totalImages; i++) {
+  for (let i = 0; i <= totalImages; i++) {
     images.push(`images/36_00${i}_Ultra.jpeg`);
   }
 
