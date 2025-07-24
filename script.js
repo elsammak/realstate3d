@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Populate the images array
   for (let i = 1; i <= totalImages; i++) {
-    images.push(`images/36_00${i}_Ultra.png`);
+    images.push(`images/36_00${i}_Ultra.jpeg`);
   }
 
   // Set the initial image
