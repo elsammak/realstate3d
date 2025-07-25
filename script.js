@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentImage = 0;
 
   for (let i = 0; i <= totalImages; i++) {
-    images.push(`images/low/36_00${i}_Ultra.jpeg`);
+    const padded = i.toString().padStart(1, "0");
+    images.push(`images/low/36_00${padded}_Ultra.jpeg`);
   }
 
   const preloadImages = () => {
@@ -32,46 +33,41 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   };
 
-  preloadImages().then(() => {
-    // Hide loading screen
-    loadingScreen.style.display = "none";
-
-    // Show initial image
-    image.src = images[currentImage];
-
-    let isDragging = false;
-    let startX;
-    let startImage;
-
-    viewer.style.cursor = "grab";
-
-    viewer.addEventListener("mousedown", (e) => {
-      isDragging = true;
-      startX = e.pageX;
-      startImage = currentImage;
-      viewer.style.cursor = "grabbing";
-    });
-
-    document.addEventListener("mouseup", () => {
-      isDragging = false;
-      viewer.style.cursor = "grab";
-    });
-
-    document.addEventListener("mousemove", (e) => {
-      if (!isDragging) return;
-
-      const dx = e.pageX - startX;
-      const rotation = Math.round(dx / 10);
-
-      let newImage = startImage - rotation;
-      if (newImage < 0) {
-        newImage = (totalImages + (newImage % totalImages)) % totalImages;
-      } else {
-        newImage = newImage % totalImages;
-      }
-
-      currentImage = newImage;
+  preloadImages()
+    .then(() => {
+      loadingScreen.style.display = "none";
+      viewer.style.display = "flex"; // ✅ Now show the viewer
       image.src = images[currentImage];
+
+      let isDragging = false;
+      let startX;
+      let startImage;
+      viewer.style.cursor = "grab";
+
+      viewer.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        startX = e.pageX;
+        startImage = currentImage;
+        viewer.style.cursor = "grabbing";
+      });
+
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+        viewer.style.cursor = "grab";
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        const dx = e.pageX - startX;
+        const rotation = Math.round(dx / 10);
+        let newImage = startImage - rotation;
+        newImage = (newImage + images.length) % images.length;
+        currentImage = newImage;
+        image.src = images[currentImage];
+      });
+    })
+    .catch((err) => {
+      loadingText.textContent = "Failed to load images!";
+      console.error(err);
     });
-  });
 });
